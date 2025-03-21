@@ -36,6 +36,9 @@ void main() async {
   // Initialize performance optimizations
   await PerformanceUtils.initialize();
 
+  // Initialize theme system
+  AppTheme.initialize();
+
   // Setup animation optimizations
   AnimationUtils.optimizeAnimations();
 
@@ -60,6 +63,11 @@ void main() async {
   runApp(const ProviderScope(child: UnfoldApp()));
 }
 
+// Theme provider to control theme mode
+final themeModeProvider = StateProvider<ThemeMode>((ref) {
+  return ThemeMode.system; // Default to system theme
+});
+
 class UnfoldApp extends ConsumerWidget {
   const UnfoldApp({super.key});
 
@@ -67,13 +75,15 @@ class UnfoldApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Get the router from the provider
     final router = ref.watch(routerProvider);
+    // Get the current theme mode from the provider
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system, // Will be controlled by a provider later
+      themeMode: themeMode,
       routerConfig: router,
     );
   }

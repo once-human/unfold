@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:unfold/screens/ui_showcase.dart';
 import 'constants.dart';
 
 /// Router configuration provider
@@ -10,9 +11,15 @@ final routerProvider = Provider<GoRouter>((ref) {
   final isLoggedIn = false;
 
   return GoRouter(
-    initialLocation: AppRoutes.splash,
+    initialLocation:
+        AppRoutes.uiShowcase, // Start with showcase for development
     debugLogDiagnostics: true, // Disable in production
     routes: [
+      // UI Showcase for development
+      GoRoute(
+        path: AppRoutes.uiShowcase,
+        builder: (context, state) => const UIShowcaseScreen(),
+      ),
       // Main app routes will go here as we implement them
       GoRoute(
         path: AppRoutes.splash,
@@ -43,6 +50,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
     // Redirect based on authentication state
     redirect: (context, state) {
+      // Skip auth check for UI showcase during development
+      if (state.matchedLocation == AppRoutes.uiShowcase) {
+        return null;
+      }
+
       // Auth paths that don't require redirection
       final isAuthPath =
           state.matchedLocation == AppRoutes.login ||

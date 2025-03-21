@@ -1,68 +1,69 @@
 import 'package:flutter/material.dart';
 
-/// App-wide constants
+/// Global application constants
 class AppConstants {
-  // Private constructor to prevent instantiation
-  AppConstants._();
-
-  // App information
+  // App details
   static const String appName = 'Unfold';
   static const String appVersion = '1.0.0';
+  static const String appTagline = 'Your chronological life story';
 
-  // API constants
-  static const int apiConnectTimeout = 10000; // 10 seconds
-  static const int apiReceiveTimeout = 10000; // 10 seconds
+  // Primary color seed for Material You
+  static const Color seedColor = Color(0xFF6750A4); // Primary purple
 
-  // Animation durations
-  static const Duration quickAnimation = Duration(milliseconds: 150);
-  static const Duration normalAnimation = Duration(milliseconds: 250);
-  static const Duration slowAnimation = Duration(milliseconds: 350);
-
-  // UI spacing constants
+  // Spacing constants
   static const double spacingXS = 4.0;
   static const double spacingS = 8.0;
   static const double spacingM = 16.0;
   static const double spacingL = 24.0;
   static const double spacingXL = 32.0;
-  static const double spacingXXL = 48.0;
+  static const double spacing2XL = 48.0;
+  static const double spacing3XL = 64.0;
 
-  // Border radius
-  static const double radiusS = 4.0;
-  static const double radiusM = 8.0;
-  static const double radiusL = 12.0;
-  static const double radiusXL = 16.0;
-  static const double radiusXXL = 24.0;
-  static const double radiusCircular = 100.0;
+  // Border radius constants
+  static const double radiusXS = 4.0;
+  static const double radiusS = 8.0;
+  static const double radiusM = 12.0;
+  static const double radiusL = 16.0;
+  static const double radiusXL = 24.0;
+  static const double radiusCircular = 1000.0; // Very large for circular shapes
 
-  // Icon sizes
-  static const double iconS = 16.0;
-  static const double iconM = 24.0;
-  static const double iconL = 32.0;
-  static const double iconXL = 48.0;
+  // Animation durations
+  static const Duration animDurationFast = Duration(milliseconds: 200);
+  static const Duration animDurationMedium = Duration(milliseconds: 300);
+  static const Duration animDurationSlow = Duration(milliseconds: 500);
 
-  // Default page sizes for pagination
-  static const int defaultPageSize = 20;
+  // Image placeholders
+  static const String defaultImagePlaceholder = 'assets/images/placeholder.png';
+  static const String defaultAvatarPlaceholder =
+      'assets/images/avatar_placeholder.png';
 
-  // UI constraints
-  static const double maxContentWidth = 600.0;
-  static const double maxDialogWidth = 400.0;
+  // Layout
+  static const double maxContentWidth = 1200.0;
+  static const double maxCardWidth = 600.0;
+  static const EdgeInsets screenPadding = EdgeInsets.all(spacingM);
 
-  // Tap areas
-  static const double minTapSize = 48.0;
+  // Performance
+  static const int defaultAnimationFps = 60;
+  static const int highQualityAnimationFps = 120;
 
-  // Scrolling physics for smooth scrolling
-  static const ScrollPhysics smoothScrollPhysics = BouncingScrollPhysics(
-    parent: AlwaysScrollableScrollPhysics(),
-  );
+  // API and networking
+  static const Duration defaultTimeout = Duration(seconds: 10);
+  static const Duration cacheValidityDuration = Duration(hours: 1);
 
-  // Cache constants
-  static const Duration defaultCacheDuration = Duration(days: 7);
+  // Typography
+  static const double fontSizeXS = 12.0;
+  static const double fontSizeS = 14.0;
+  static const double fontSizeM = 16.0;
+  static const double fontSizeL = 18.0;
+  static const double fontSizeXL = 20.0;
+  static const double fontSize2XL = 24.0;
+  static const double fontSize3XL = 32.0;
 
-  // Default placeholder asset paths
-  static const String defaultUserPlaceholder =
-      'assets/images/user_placeholder.png';
-  static const String defaultImagePlaceholder =
-      'assets/images/image_placeholder.png';
+  // Elevation
+  static const double elevationS = 1.0;
+  static const double elevationM = 2.0;
+  static const double elevationL = 4.0;
+  static const double elevationXL = 8.0;
 }
 
 /// App route names
@@ -86,4 +87,7 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String notifications = '/notifications';
   static const String search = '/search';
+
+  // Development/Debug routes
+  static const String uiShowcase = '/ui-showcase';
 }
