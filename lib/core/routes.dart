@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unfold/layout/app_scaffold.dart';
 import 'package:unfold/screens/ui_showcase.dart';
+import 'package:unfold/utils/transition_utils.dart';
 import 'constants.dart';
 
 /// Router configuration provider
@@ -19,35 +20,54 @@ final routerProvider = Provider<GoRouter>((ref) {
       // UI Showcase for development
       GoRoute(
         path: AppRoutes.uiShowcase,
-        builder:
-            (context, state) => AppScaffold(
-              currentPath: AppRoutes.uiShowcase,
-              child: const UIShowcaseScreen(),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.fade,
+              child: AppScaffold(
+                currentPath: AppRoutes.uiShowcase,
+                child: const UIShowcaseScreen(),
+              ),
             ),
       ),
       // Main app routes will go here as we implement them
       GoRoute(
         path: AppRoutes.splash,
-        builder:
-            (context, state) =>
-                _getPlaceholderScreen('Splash Screen', AppRoutes.splash),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.fade,
+              child: _getPlaceholderScreen('Splash Screen', AppRoutes.splash),
+            ),
       ),
       // Home route with nested routes
       GoRoute(
         path: AppRoutes.home,
-        builder:
-            (context, state) => AppScaffold(
-              currentPath: AppRoutes.home,
-              child: _getPlaceholderContent('Home Screen'),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.rightToLeft,
+              child: AppScaffold(
+                currentPath: AppRoutes.home,
+                child: _getPlaceholderContent('Home Screen'),
+              ),
             ),
         routes: [
           GoRoute(
             path: 'post/:id',
-            builder:
-                (context, state) => AppScaffold(
-                  currentPath: AppRoutes.home,
-                  child: _getPlaceholderContent(
-                    'Post Details - ID: ${state.pathParameters['id']}',
+            pageBuilder:
+                (context, state) => TransitionUtils.buildTransition(
+                  context: context,
+                  state: state,
+                  type: TransitionType.bottomToTop,
+                  child: AppScaffold(
+                    currentPath: AppRoutes.home,
+                    child: _getPlaceholderContent(
+                      'Post Details - ID: ${state.pathParameters['id']}',
+                    ),
                   ),
                 ),
           ),
@@ -56,49 +76,77 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Explore route
       GoRoute(
         path: AppRoutes.explore,
-        builder:
-            (context, state) => AppScaffold(
-              currentPath: AppRoutes.explore,
-              child: _getPlaceholderContent('Explore Screen'),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.rightToLeft,
+              child: AppScaffold(
+                currentPath: AppRoutes.explore,
+                child: _getPlaceholderContent('Explore Screen'),
+              ),
             ),
       ),
       // Create post route
       GoRoute(
         path: AppRoutes.postCreate,
-        builder:
-            (context, state) => AppScaffold(
-              currentPath: AppRoutes.postCreate,
-              child: _getPlaceholderContent('Create Memory'),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.scale,
+              child: AppScaffold(
+                currentPath: AppRoutes.postCreate,
+                child: _getPlaceholderContent('Create Memory'),
+              ),
             ),
       ),
       // Profile route
       GoRoute(
         path: AppRoutes.profile,
-        builder:
-            (context, state) => AppScaffold(
-              currentPath: AppRoutes.profile,
-              child: _getPlaceholderContent('Profile Screen'),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.rightToLeft,
+              child: AppScaffold(
+                currentPath: AppRoutes.profile,
+                child: _getPlaceholderContent('Profile Screen'),
+              ),
             ),
       ),
       // Auth routes without the app scaffold
       GoRoute(
         path: AppRoutes.login,
-        builder:
-            (context, state) =>
-                _getPlaceholderScreen('Login Screen', AppRoutes.login),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.fade,
+              child: _getPlaceholderScreen('Login Screen', AppRoutes.login),
+            ),
       ),
       GoRoute(
         path: AppRoutes.signup,
-        builder:
-            (context, state) =>
-                _getPlaceholderScreen('Signup Screen', AppRoutes.signup),
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.rightToLeft,
+              child: _getPlaceholderScreen('Signup Screen', AppRoutes.signup),
+            ),
       ),
       GoRoute(
         path: AppRoutes.onboarding,
-        builder:
-            (context, state) => _getPlaceholderScreen(
-              'Onboarding Screen',
-              AppRoutes.onboarding,
+        pageBuilder:
+            (context, state) => TransitionUtils.buildTransition(
+              context: context,
+              state: state,
+              type: TransitionType.parallax,
+              child: _getPlaceholderScreen(
+                'Onboarding Screen',
+                AppRoutes.onboarding,
+              ),
             ),
       ),
     ],

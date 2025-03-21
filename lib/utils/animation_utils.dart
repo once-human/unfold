@@ -7,6 +7,12 @@ class AnimationUtils {
   // Private constructor to prevent instantiation
   AnimationUtils._();
 
+  /// Fluid iOS-like animation curve
+  static const Curve fluidCurve = Curves.easeOutCubic;
+
+  /// Material Design curve for motion
+  static const Curve materialCurve = Curves.easeInOutCubic;
+
   /// Apply optimized page transition
   static Widget applyPageTransition({
     required Widget child,
@@ -77,6 +83,25 @@ class AnimationUtils {
     }
 
     return result;
+  }
+
+  /// Apply a parallax effect to a widget based on scroll position
+  static Widget applyParallaxEffect(
+    Widget child, {
+    required ScrollController scrollController,
+    double parallaxFactor = 0.5,
+  }) {
+    return AnimatedBuilder(
+      animation: scrollController,
+      builder: (context, child) {
+        final scrollOffset = scrollController.offset;
+        return Transform.translate(
+          offset: Offset(0, -scrollOffset * parallaxFactor),
+          child: child,
+        );
+      },
+      child: child,
+    );
   }
 }
 
