@@ -47,16 +47,16 @@
 
 ## ⏱️ Timeline Implementation (Week 5-7)
 
-- [ ] Develop chronological data model
-- [ ] Create post storage system
-- [ ] Implement date-based sorting algorithm
-- [ ] Build memory categorization system
-- [ ] Create milestone pinning functionality
-- [ ] Implement vertical timeline UI
-- [ ] Add dynamic post loading (infinite scroll)
-- [ ] Build interactive scroll indicator
-- [ ] Optimize timeline scrolling performance
-- [ ] Add year/month markers in timeline
+- [x] Develop chronological data model
+- [x] Create post storage system
+- [x] Implement date-based sorting algorithm
+- [x] Build memory categorization system
+- [x] Create milestone pinning functionality
+- [x] Implement vertical timeline UI
+- [x] Add dynamic post loading (infinite scroll)
+- [x] Build interactive scroll indicator
+- [x] Optimize timeline scrolling performance
+- [x] Add year/month markers in timeline
 
 ## 📝 Post Creation System (Week 7-9)
 

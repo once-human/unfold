@@ -61,6 +61,8 @@ dependencies:
   path_provider: ^2.1.2
   flutter_native_splash: ^2.4.0
   device_info_plus: ^9.1.2
+  timeago: ^3.6.0
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:
