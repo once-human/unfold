@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:unfold/layout/app_scaffold.dart';
 import 'package:unfold/screens/ui_showcase.dart';
 import 'constants.dart';
 
@@ -18,34 +19,87 @@ final routerProvider = Provider<GoRouter>((ref) {
       // UI Showcase for development
       GoRoute(
         path: AppRoutes.uiShowcase,
-        builder: (context, state) => const UIShowcaseScreen(),
+        builder:
+            (context, state) => AppScaffold(
+              currentPath: AppRoutes.uiShowcase,
+              child: const UIShowcaseScreen(),
+            ),
       ),
       // Main app routes will go here as we implement them
       GoRoute(
         path: AppRoutes.splash,
-        builder: (context, state) => _getPlaceholderScreen('Splash Screen'),
+        builder:
+            (context, state) =>
+                _getPlaceholderScreen('Splash Screen', AppRoutes.splash),
       ),
-      // Placeholder route structure to be filled in as we implement screens
+      // Home route with nested routes
       GoRoute(
         path: AppRoutes.home,
-        builder: (context, state) => _getPlaceholderScreen('Home Screen'),
+        builder:
+            (context, state) => AppScaffold(
+              currentPath: AppRoutes.home,
+              child: _getPlaceholderContent('Home Screen'),
+            ),
         routes: [
           GoRoute(
             path: 'post/:id',
             builder:
-                (context, state) => _getPlaceholderScreen(
-                  'Post Details - ID: ${state.pathParameters['id']}',
+                (context, state) => AppScaffold(
+                  currentPath: AppRoutes.home,
+                  child: _getPlaceholderContent(
+                    'Post Details - ID: ${state.pathParameters['id']}',
+                  ),
                 ),
           ),
         ],
       ),
+      // Explore route
       GoRoute(
         path: AppRoutes.explore,
-        builder: (context, state) => _getPlaceholderScreen('Explore Screen'),
+        builder:
+            (context, state) => AppScaffold(
+              currentPath: AppRoutes.explore,
+              child: _getPlaceholderContent('Explore Screen'),
+            ),
       ),
+      // Create post route
+      GoRoute(
+        path: AppRoutes.postCreate,
+        builder:
+            (context, state) => AppScaffold(
+              currentPath: AppRoutes.postCreate,
+              child: _getPlaceholderContent('Create Memory'),
+            ),
+      ),
+      // Profile route
       GoRoute(
         path: AppRoutes.profile,
-        builder: (context, state) => _getPlaceholderScreen('Profile Screen'),
+        builder:
+            (context, state) => AppScaffold(
+              currentPath: AppRoutes.profile,
+              child: _getPlaceholderContent('Profile Screen'),
+            ),
+      ),
+      // Auth routes without the app scaffold
+      GoRoute(
+        path: AppRoutes.login,
+        builder:
+            (context, state) =>
+                _getPlaceholderScreen('Login Screen', AppRoutes.login),
+      ),
+      GoRoute(
+        path: AppRoutes.signup,
+        builder:
+            (context, state) =>
+                _getPlaceholderScreen('Signup Screen', AppRoutes.signup),
+      ),
+      GoRoute(
+        path: AppRoutes.onboarding,
+        builder:
+            (context, state) => _getPlaceholderScreen(
+              'Onboarding Screen',
+              AppRoutes.onboarding,
+            ),
       ),
     ],
     // Redirect based on authentication state
@@ -80,8 +134,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   );
 });
 
-/// Temporary placeholder screen until we build actual screens
-Widget _getPlaceholderScreen(String screenName) {
+/// Temporary placeholder screen without the app scaffold (for auth screens)
+Widget _getPlaceholderScreen(String screenName, String path) {
   return Scaffold(
     appBar: AppBar(title: Text(screenName)),
     body: Center(
@@ -95,6 +149,22 @@ Widget _getPlaceholderScreen(String screenName) {
           const Text('Coming soon!'),
         ],
       ),
+    ),
+  );
+}
+
+/// Temporary placeholder content (for use within app scaffold)
+Widget _getPlaceholderContent(String screenName) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(screenName, style: const TextStyle(fontSize: 24)),
+        const SizedBox(height: 20),
+        const CircularProgressIndicator(),
+        const SizedBox(height: 20),
+        const Text('Coming soon!'),
+      ],
     ),
   );
 }

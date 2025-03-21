@@ -36,10 +36,10 @@
 
 ## 📱 Core Layout & Navigation (Week 4-5)
 
-- [ ] Build app scaffold with persistent layout
-- [ ] Implement bottom navigation with fluid transitions
-- [ ] Create top app bar with dynamic behavior
-- [ ] Set up gesture-based navigation
+- [x] Build app scaffold with persistent layout
+- [x] Implement bottom navigation with fluid transitions
+- [x] Create top app bar with dynamic behavior
+- [x] Set up gesture-based navigation
 - [ ] Implement hero animations between screens
 - [ ] Build motion-based page transitions
 - [ ] Add parallax effects for enhanced depth
