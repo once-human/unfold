@@ -135,4 +135,106 @@ final availableYearsProvider = Provider<List<int>>((ref) {
 Future<void> initializeTimelineProviders(ProviderContainer container) async {
   final repository = await PostRepository.getInstance();
   container.read(postRepositoryProvider.notifier).state = repository;
+
+  // Generate sample data for the timeline if it's empty
+  if (repository.getAllPosts().isEmpty) {
+    await _generateSampleData(repository);
+  }
+}
+
+/// Generates sample data for the timeline
+Future<void> _generateSampleData(PostRepository repository) async {
+  // Create sample posts with different dates, categories, and content
+  final now = DateTime.now();
+  final posts = [
+    // This year - recent posts
+    MemoryPost(
+      userId: 'user123',
+      title: 'Started Learning Flutter',
+      content:
+          'Today I began my journey into Flutter development. The framework seems very promising and I\'m excited to build my first app!',
+      memoryDate: DateTime(now.year, now.month, now.day - 14),
+      category: MemoryCategory.education,
+      tags: ['flutter', 'coding', 'learning'],
+    ),
+    MemoryPost(
+      userId: 'user123',
+      title: 'Family Vacation to the Mountains',
+      content:
+          'We spent a wonderful week in the mountains. The views were breathtaking and the hiking trails were amazing.',
+      memoryDate: DateTime(now.year, now.month - 1, 15),
+      category: MemoryCategory.family,
+      isMilestone: true,
+      tags: ['vacation', 'mountains', 'hiking'],
+      mediaAttachments: [
+        MediaAttachment(
+          url: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606',
+          type: MediaType.image,
+          caption: 'Beautiful mountain view',
+        ),
+      ],
+    ),
+    MemoryPost(
+      userId: 'user123',
+      title: 'Completed My First Half Marathon',
+      content:
+          'After months of training, I finally ran my first half marathon! Finished in 1:45, which is better than I expected.',
+      memoryDate: DateTime(now.year, now.month - 2, 5),
+      category: MemoryCategory.health,
+      isMilestone: true,
+      tags: ['running', 'achievement', 'fitness'],
+    ),
+
+    // Last year
+    MemoryPost(
+      userId: 'user123',
+      title: 'New Job at Tech Company',
+      content:
+          'Started my new position as a software developer at a great tech company. The team is amazing and I\'m looking forward to learning and growing here.',
+      memoryDate: DateTime(now.year - 1, 10, 10),
+      category: MemoryCategory.career,
+      isMilestone: true,
+      tags: ['career', 'software', 'newjob'],
+    ),
+    MemoryPost(
+      userId: 'user123',
+      title: 'Road Trip Along the Coast',
+      content:
+          'Spent two weeks driving along the coast, stopping at beautiful beaches and coastal towns. It was one of the best trips I\'ve ever taken.',
+      memoryDate: DateTime(now.year - 1, 7, 22),
+      category: MemoryCategory.travel,
+      tags: ['roadtrip', 'beach', 'vacation'],
+      mediaAttachments: [
+        MediaAttachment(
+          url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
+          type: MediaType.image,
+          caption: 'Sunset at the beach',
+        ),
+      ],
+    ),
+
+    // Two years ago
+    MemoryPost(
+      userId: 'user123',
+      title: 'Started a New Hobby: Photography',
+      content:
+          'Got my first DSLR camera and started learning photography. I\'m particularly interested in landscape and nature photography.',
+      memoryDate: DateTime(now.year - 2, 5, 17),
+      category: MemoryCategory.hobby,
+      tags: ['photography', 'camera', 'hobby'],
+    ),
+    MemoryPost(
+      userId: 'user123',
+      title: 'Graduated from University',
+      content:
+          'Finally graduated with a degree in Computer Science! It\'s been a challenging but rewarding journey.',
+      memoryDate: DateTime(now.year - 2, 6, 30),
+      category: MemoryCategory.education,
+      isMilestone: true,
+      tags: ['graduation', 'university', 'achievement'],
+    ),
+  ];
+
+  // Add sample posts to the repository
+  await repository.addPosts(posts);
 }

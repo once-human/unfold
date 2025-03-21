@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unfold/models/post_model.dart';
 import 'package:unfold/models/timeline_model.dart';
+import 'package:unfold/services/post_repository.dart';
 import 'package:unfold/services/timeline_provider.dart';
 import 'package:unfold/widgets/memory_card.dart';
 import 'package:unfold/widgets/timeline_date_marker.dart';
@@ -9,15 +10,32 @@ import 'package:unfold/widgets/timeline_filter_bar.dart';
 import 'package:unfold/core/constants.dart';
 
 /// The main timeline screen showing memory posts
-class TimelineScreen extends ConsumerStatefulWidget {
+class TimelineScreen extends StatelessWidget {
   /// Creates a timeline screen
   const TimelineScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimelineScreen> createState() => _TimelineScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Timeline'), centerTitle: true),
+      body: ProviderScope(
+        overrides: [
+          // This ensures the timeline screen can be opened independently
+          // by initializing its own provider instance
+        ],
+        child: _TimelineContent(),
+      ),
+    );
+  }
 }
 
-class _TimelineScreenState extends ConsumerState<TimelineScreen> {
+/// Content of the timeline screen
+class _TimelineContent extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<_TimelineContent> createState() => _TimelineContentState();
+}
+
+class _TimelineContentState extends ConsumerState<_TimelineContent> {
   /// Scroll controller for the timeline
   final ScrollController _scrollController = ScrollController();
 
@@ -31,6 +49,12 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+
+    // Initialize the repository if needed
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final repository = await PostRepository.getInstance();
+      ref.read(postRepositoryProvider.notifier).state = repository;
+    });
   }
 
   @override
@@ -79,57 +103,55 @@ class _TimelineScreenState extends ConsumerState<TimelineScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the repository is initialized
+    final repository = ref.watch(postRepositoryProvider);
+
+    if (repository == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     final groupedPosts = ref.watch(groupedPostsProvider);
     final timelineState = ref.watch(timelineProvider);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Filter and sort controls
-            TimelineFilterBar(
-              onFilterChanged: (category) {
-                ref.read(timelineProvider.notifier).filterByCategory(category);
-              },
-              onSortChanged: (sortMethod) {
-                ref.read(timelineProvider.notifier).setSortMethod(sortMethod);
-              },
-              onGroupingChanged: (grouping) {
-                ref.read(timelineProvider.notifier).setGrouping(grouping);
-              },
-              activeFilters: timelineState.activeCategories,
-              currentSortMethod: timelineState.sortMethod,
-              currentGrouping: timelineState.grouping,
-            ),
+    return SafeArea(
+      child: Column(
+        children: [
+          // Filter and sort controls
+          TimelineFilterBar(
+            onFilterChanged: (category) {
+              ref.read(timelineProvider.notifier).filterByCategory(category);
+            },
+            onSortChanged: (sortMethod) {
+              ref.read(timelineProvider.notifier).setSortMethod(sortMethod);
+            },
+            onGroupingChanged: (grouping) {
+              ref.read(timelineProvider.notifier).setGrouping(grouping);
+            },
+            activeFilters: timelineState.activeCategories,
+            currentSortMethod: timelineState.sortMethod,
+            currentGrouping: timelineState.grouping,
+          ),
 
-            // Year indicator that sticks to the top
-            if (_currentYear != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  _currentYear.toString(),
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+          // Year indicator that sticks to the top
+          if (_currentYear != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                _currentYear.toString(),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-
-            // Timeline content
-            Expanded(
-              child:
-                  groupedPosts.isEmpty
-                      ? _buildEmptyState()
-                      : _buildTimeline(groupedPosts, timelineState.grouping),
             ),
-          ],
-        ),
-      ),
-      // FAB for adding new memories
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigate to memory creation screen
-        },
-        child: const Icon(Icons.add),
+
+          // Timeline content
+          Expanded(
+            child:
+                groupedPosts.isEmpty
+                    ? _buildEmptyState()
+                    : _buildTimeline(groupedPosts, timelineState.grouping),
+          ),
+        ],
       ),
     );
   }

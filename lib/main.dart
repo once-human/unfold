@@ -5,6 +5,7 @@ import 'package:unfold/core/app_config.dart';
 import 'package:unfold/core/constants.dart';
 import 'package:unfold/core/routes.dart';
 import 'package:unfold/core/theme.dart';
+import 'package:unfold/services/timeline_provider.dart';
 import 'package:unfold/utils/animation_utils.dart';
 import 'package:unfold/utils/performance_benchmark.dart';
 import 'package:unfold/utils/performance_utils.dart';
@@ -42,6 +43,12 @@ void main() async {
   // Setup animation optimizations
   AnimationUtils.optimizeAnimations();
 
+  // Create ProviderContainer for pre-initialization
+  final container = ProviderContainer();
+
+  // Initialize timeline providers
+  await initializeTimelineProviders(container);
+
   // Set performance goals
   PerformanceBenchmark.setPerformanceGoals(
     targetFps: 120,
@@ -60,7 +67,7 @@ void main() async {
     debugPrint('📱 App launch completed in ${launchDuration.inMilliseconds}ms');
   }
 
-  runApp(const ProviderScope(child: UnfoldApp()));
+  runApp(ProviderScope(parent: container, child: const UnfoldApp()));
 }
 
 // Theme provider to control theme mode

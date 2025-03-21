@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:unfold/core/constants.dart';
+import 'package:unfold/models/post_model.dart';
+import 'package:unfold/models/timeline_model.dart';
+import 'package:unfold/screens/timeline_screen.dart';
 import 'package:unfold/widgets/depth_card.dart';
 import 'package:unfold/widgets/glass_container.dart';
 import 'package:unfold/widgets/ios_button.dart';
@@ -24,6 +27,11 @@ class UIShowcaseScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildSectionTitle(context, 'Timeline Preview'),
+            const SizedBox(height: AppConstants.spacingM),
+            _buildTimelinePreview(context),
+
+            const SizedBox(height: AppConstants.spacing2XL),
             _buildSectionTitle(context, 'Glassmorphism'),
             const SizedBox(height: AppConstants.spacingM),
             _buildGlassmorphismShowcase(context),
@@ -56,6 +64,46 @@ class UIShowcaseScreen extends StatelessWidget {
       style: Theme.of(
         context,
       ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget _buildTimelinePreview(BuildContext context) {
+    return DepthCard(
+      width: double.infinity,
+      depth: 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppConstants.spacingM),
+            child: Text(
+              'Timeline Implementation',
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: AppConstants.spacingS),
+          const Divider(),
+          const SizedBox(height: AppConstants.spacingM),
+          IOSButton.primary(
+            label: 'Open Timeline Demo',
+            icon: Icons.timeline,
+            onPressed: () {
+              // Navigate to the timeline screen
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const TimelineScreen()),
+              );
+            },
+          ),
+          const SizedBox(height: AppConstants.spacingM),
+          Text(
+            'Tap the button above to view the timeline implementation with sample data. It demonstrates the vertical timeline with posts, date markers, and filtering capabilities.',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: AppConstants.spacingM),
+        ],
+      ),
     );
   }
 
