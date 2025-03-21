@@ -5,6 +5,9 @@ import 'package:unfold/core/app_config.dart';
 import 'package:unfold/core/constants.dart';
 import 'package:unfold/core/routes.dart';
 import 'package:unfold/core/theme.dart';
+import 'package:unfold/utils/animation_utils.dart';
+import 'package:unfold/utils/performance_benchmark.dart';
+import 'package:unfold/utils/performance_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +27,35 @@ void main() async {
     ),
   );
 
+  // Start tracking app launch time
+  PerformanceBenchmark.startTrackingOperation('AppLaunch');
+
   // Initialize app configuration
   await AppConfig.instance.initialize();
+
+  // Initialize performance optimizations
+  await PerformanceUtils.initialize();
+
+  // Setup animation optimizations
+  AnimationUtils.optimizeAnimations();
+
+  // Set performance goals
+  PerformanceBenchmark.setPerformanceGoals(
+    targetFps: 120,
+    maxFrameTimeMs: 8, // For 120fps (1000ms / 120 frames = ~8ms per frame)
+    targetStartupMs: 1500,
+  );
+
+  // Start performance monitoring in debug mode
+  PerformanceBenchmark.startMonitoring();
+
+  // Record app launch complete
+  final launchDuration = PerformanceBenchmark.stopTrackingOperation(
+    'AppLaunch',
+  );
+  if (launchDuration != null) {
+    debugPrint('📱 App launch completed in ${launchDuration.inMilliseconds}ms');
+  }
 
   runApp(const ProviderScope(child: UnfoldApp()));
 }
