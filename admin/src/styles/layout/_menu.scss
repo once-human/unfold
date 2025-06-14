@@ -1,0 +1,167 @@
+.layout-sidebar {
+    position: fixed;
+    width: 280px;
+    height: calc(100vh - 2rem);
+    z-index: 999;
+    overflow-y: auto;
+    user-select: none;
+    top: 1rem;
+    left: 1rem;
+    transition: transform $transitionDuration, left $transitionDuration;
+    background-color: var(--surface-b);
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Added styles for the logo section in the menu */
+.layout-menu-logo {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.5rem;
+
+    a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: var(--text-color-secondary);
+
+        img {
+            height: 2.5rem;
+            margin-right: 0.75rem;
+        }
+
+        span {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+    }
+}
+
+.layout-menu {
+    margin: 0;
+    padding: 0 1rem 1rem 1rem;
+    list-style-type: none;
+    user-select: none;
+
+    .layout-root-menuitem {
+        >.layout-menuitem-root-text {
+            font-size: .857rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--surface-900);
+            margin: .75rem 0;
+        }
+    }
+
+    li {
+        padding: 0;
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        position: relative;
+        outline: 0 none;
+        color: var(--text-color-secondary);
+        cursor: pointer;
+        padding: 0.875rem 1rem;
+        border-radius: $borderRadius;
+        transition: background-color $transitionDuration, color $transitionDuration;
+        margin-bottom: 0.25rem;
+
+        .layout-menuitem-icon {
+            margin-right: 0.75rem;
+            font-size: 1.125rem;
+            color: var(--text-color-secondary);
+        }
+
+        .layout-menuitem-text {
+            font-size: 0.925rem;
+            color: var(--text-color-secondary);
+        }
+
+        .layout-submenu-toggler {
+            font-size: 0.875rem;
+            margin-left: auto;
+            transition: transform $transitionDuration;
+            color: var(--text-color-secondary);
+        }
+
+        &:hover {
+            background-color: var(--surface-hover);
+            color: var(--primary-color);
+            .layout-menuitem-icon {
+                color: var(--primary-color);
+            }
+            .layout-menuitem-text {
+                color: var(--primary-color);
+            }
+        }
+
+        &.active-route {
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: var(--primary-color-text);
+            .layout-menuitem-icon {
+                color: var(--primary-color);
+            }
+            .layout-menuitem-text {
+                color: var(--primary-color);
+            }
+        }
+
+        &:focus {
+            @include focused-inset();
+        }
+    }
+
+    li.active-menuitem {
+        > a {
+            .layout-submenu-toggler {
+                transform: rotate(-180deg);
+            }
+        }
+
+        > ul {
+            max-height: 1000px;
+        }
+    }
+
+    ul {
+        overflow: hidden;
+        max-height: 0;
+
+        li {
+            a {
+                padding-left: 2.5rem;
+                .layout-menuitem-icon {
+                    margin-right: 0.625rem;
+                    font-size: 1rem;
+                }
+                .layout-menuitem-text {
+                }
+            }
+        }
+    }
+}
+
+/* These animation classes are from the original Sakai, ensure they match your needs */
+.layout-submenu-enter-active {
+    max-height: 1000px !important;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.layout-submenu-enter-done {
+    max-height: auto !important;
+    overflow: visible;
+}
+
+.layout-submenu-exit {
+    max-height: 1000px !important;
+}
+
+.layout-submenu-exit-active {
+    overflow: hidden;
+    max-height: 0 !important;
+    transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+}
