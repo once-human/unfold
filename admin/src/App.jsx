@@ -1,9 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import "./index.css"; // Import Tailwind CSS
 import Layout from "./layout/Layout"; // Import the main Sakai-based layout
+import { AdminAuthProvider, useAdminAuth } from "./context/AdminAuthContext";
 
 // Admin Pages
+import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/Dashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import MembershipPlanControl from "./pages/admin/MembershipPlanControl";
@@ -26,12 +28,43 @@ import 'primereact/resources/primereact.min.css'; // Core PrimeReact CSS
 import './styles/layout/layout.scss'; // Main layout styles
 // import './styles/demo/Demos.scss'; // Demo specific styles (optional)
 
+const AdminProtectedRoute = ({ children }) => {
+  const { adminUser, loading } = useAdminAuth();
+
+  if (loading) {
+    return <div>Loading admin panel...</div>; // Or a loading spinner
+  }
+
+  if (!adminUser) {
+    // Not logged in as admin, redirect to admin login page
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  if (adminUser.role !== "admin") {
+    // Logged in but not an admin, redirect to an unauthorized page or admin login
+    return <Navigate to="/admin/login" replace />; // Or a generic unauthorized page
+  }
+
+  return children;
+};
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
-      <Router>
+    <AdminAuthProvider>
+      <div className="min-h-screen bg-gray-100 text-gray-900">
         <Routes>
-          <Route path="/" element={<Layout />}>
+          {/* Admin Login Route */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+
+          {/* Protected Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <AdminProtectedRoute>
+                <Layout />
+              </AdminProtectedRoute>
+            }
+          >
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="user-management" element={<UserManagement />} />
@@ -44,9 +77,12 @@ function App() {
             <Route path="affiliate-program" element={<AffiliateManagement />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
+
+          {/* Fallback for unmatched routes * The admin directory is likely to be a separate application. */}
+          <Route path="*" element={<Navigate to="/admin/login" replace />} />
         </Routes>
-      </Router>
-    </div>
+      </div>
+    </AdminAuthProvider>
   );
 }
 

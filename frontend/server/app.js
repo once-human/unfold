@@ -5,7 +5,6 @@ import cors from "cors";
 import { connection } from "./database/dbConnection.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import userRouter from "./routes/userRouter.js"
-import adminRouter from "./routes/adminRouter.js";
 import { removeUnverifiedAccounts } from "./automation/removeUnverifiedAccounts.js";
 import bodyParser from 'body-parser';
 
@@ -15,19 +14,15 @@ config({path: "./config.env"});
 
 app.use(cors({
     origin: function(origin, callback) {
-      const allowedOrigins = [
-        process.env.FRONTEND_URL,
-        process.env.ADMIN_PANEL_URL
-      ];
       console.log('Request origin:', origin); // Debug log
-      console.log('Allowed origins:', allowedOrigins); // Debug log
-      if (allowedOrigins.includes(origin)) {
+      console.log('Allowed origin:', process.env.FRONTEND_URL); // Debug log
+      if (origin === process.env.FRONTEND_URL) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTION"],
+    methods:["GET","POST","PUT","DELETE","OPTION"],
     credentials: true,
 })
 );
@@ -39,7 +34,6 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 
 app.use("/api/v1/user" , userRouter);
-app.use("/api/v1/admin", adminRouter);
 
 
 removeUnverifiedAccounts();

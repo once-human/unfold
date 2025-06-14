@@ -1,9 +1,8 @@
 // src/pages/ContactUs.jsx
 import React from 'react';
-import Layout from '../../components/Layout';
+
 const ContactUs = () => {
   return (
-    <Layout>
     <div className="min-h-screen bg-white px-4 py-10 md:px-20">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Contact Us</h1>
       <div className="grid md:grid-cols-2 gap-10">
@@ -45,7 +44,6 @@ const ContactUs = () => {
         </div>
       </div>
     </div>
-    </Layout>
   );
 };
 

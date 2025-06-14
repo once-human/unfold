@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Outfit:wght@100..900&family=Prata&display=swap');
 @import "tailwindcss";
 
@@ -22,6 +23,15 @@
   --card-foreground: 222.2 84% 4.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 84% 4.9%;
+
+  /* Sakai-specific color variables for better theme integration */
+  --surface-overlay: #ffffff;
+  --surface-hover: #f1f5f9;
+  --text-color: #334155;
+  --text-color-secondary: #64748b;
+  --primary-color: #6366f1; /* Assuming a blue similar to Sakai primary */
+  --surface-section: #f8fafc;
+  --surface-d: #e2e8f0; /* Default border color */
 }
 
 .dark {
@@ -44,6 +54,15 @@
   --card-foreground: 210 40% 98%;
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
+
+  /* Sakai-specific dark theme variables */
+  --surface-overlay: #1e293b;
+  --surface-hover: #334155;
+  --text-color: #e2e8f0;
+  --text-color-secondary: #94a3b8;
+  --primary-color: #6366f1;
+  --surface-section: #1e293b;
+  --surface-d: #334155;
 }
 
 @layer base {
@@ -54,6 +73,474 @@
     background-color: hsl(var(--background)); /* ✅ Direct CSS */
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', sans-serif;
+    background: #f1f5f9;
   }
+}
+
+/* Sakai Layout - Sidebar (from _menu.scss) */
+.layout-sidebar {
+    position: fixed;
+    width: 300px;
+    height: calc(100vh - 9rem);
+    z-index: 999;
+    overflow-y: auto;
+    user-select: none;
+    top: 7rem;
+    left: 2rem;
+    transition: transform 0.2s, left 0.2s;
+    background-color: var(--surface-overlay);
+    border-radius: 12px;
+    padding: 0.5rem 1.5rem;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, .02), 0px 0px 2px rgba(0, 0, 0, .05), 0px 1px 4px rgba(0, 0, 0, .08);
+}
+
+.layout-menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    user-select: none;
+}
+
+.layout-menu .layout-root-menuitem > .layout-menuitem-root-text {
+    font-size: .857rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--surface-900);
+    margin: .75rem 0;
+}
+
+.layout-menu .layout-root-menuitem > a {
+    display: none;
+}
+
+.layout-menu li.active-menuitem > a .layout-submenu-toggler {
+    transform: rotate(-180deg);
+}
+
+.layout-menu li.active-menuitem > ul {
+    max-height: auto;
+}
+
+.layout-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.layout-menu ul a {
+    display: flex;
+    align-items: center;
+    position: relative;
+    outline: 0 none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: .75rem 1rem;
+    border-radius: 12px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.layout-menu ul a .layout-menuitem-icon {
+    margin-right: .5rem;
+}
+
+.layout-menu ul a .layout-submenu-toggler {
+    font-size: 75%;
+    margin-left: auto;
+    transition: transform 0.2s;
+}
+
+.layout-menu ul a.rotated-icon .layout-menuitem-icon {
+    transform: rotate(90deg);
+}
+
+.layout-menu ul a.active-route {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.layout-menu ul a:hover {
+    background-color: var(--surface-hover);
+}
+
+/* @include focused-inset(); - This needs to be handled by a proper focus style if desired. */
+
+.layout-menu ul ul {
+    overflow: hidden;
+    max-height: 0;
+    border-radius: 12px;
+}
+
+.layout-menu ul ul li a {
+    margin-left: 1rem;
+}
+
+.layout-menu ul ul li li a {
+    margin-left: 2rem;
+}
+
+.layout-menu ul ul li li li a {
+    margin-left: 2.5rem;
+}
+
+.layout-menu ul ul li li li li a {
+    margin-left: 3rem;
+}
+
+.layout-menu ul ul li li li li li a {
+    margin-left: 3.5rem;
+}
+
+.layout-menu ul ul li li li li li li a {
+    margin-left: 4rem;
+}
+
+.layout-submenu-enter-active {
+    max-height: 1000px !important;
+    transition: max-height 1s ease-in-out;
+}
+
+.layout-submenu-enter-done {
+    max-height: 1000px !important;
+}
+
+.layout-submenu-exit {
+    max-height: 1000px !important;
+}
+
+.layout-submenu-exit-active {
+    overflow: hidden;
+    max-height: 0 !important;
+    transition: max-height 0.45s cubic-bezier(0, 1, 0, 1);
+}
+
+/* Old admin-sidebar styles to be removed/overridden */
+/*
+.admin-sidebar-highlight {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  background: #60a5fa;
+  border-radius: 6px;
+}
+.admin-sidebar {
+  background: #ffffff;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 0.75rem;
+}
+*/
+
+/* Card and modal polish (from previous src/index.css, now to be harmonized or replaced) */
+.card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+}
+.p-dialog .p-dialog-header {
+  background: #f8fafc;
+  color: #334155;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+}
+.p-dialog .p-dialog-content {
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+/* Topbar polish (from previous src/index.css, now to be harmonized or replaced) */
+/*
+.admin-topbar {
+  background: #ffffff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.03);
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+  padding: 0.75rem 2rem;
+}
+*/
+
+/* New Sakai Layout - Topbar (from _topbar.scss) */
+.layout-topbar {
+    position: fixed;
+    height: 5rem;
+    z-index: 997;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0 2rem;
+    background-color: var(--surface-card);
+    transition: left 0.2s;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 3px 5px rgba(0,0,0,.02), 0px 0px 2px rgba(0,0,0,.05), 0px 1px 4px rgba(0,0,0,.08);
+}
+
+.layout-topbar .layout-topbar-logo {
+    display: flex;
+    align-items: center;
+    color: var(--surface-900);
+    font-size: 1.5rem;
+    font-weight: 500;
+    width: 300px;
+    border-radius: 12px;
+}
+
+.layout-topbar .layout-topbar-logo img {
+    height: 2.5rem;
+    margin-right: .5rem;
+}
+
+/* @include focused(); - This needs to be handled by a proper focus style if desired. */
+
+.layout-topbar .layout-topbar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: var(--text-color-secondary);
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.layout-topbar .layout-topbar-button:hover {
+    color: var(--text-color);
+    background-color: var(--surface-hover);
+}
+
+/* @include focused(); - This needs to be handled by a proper focus style if desired. */
+
+.layout-topbar .layout-topbar-button i {
+    font-size: 1.5rem;
+}
+
+.layout-topbar .layout-topbar-button span {
+    font-size: 1rem;
+    display: none;
+}
+
+.layout-topbar .layout-menu-button {
+    margin-left: 2rem;
+}
+
+.layout-topbar .layout-topbar-menu-button {
+    display: none;
+}
+
+.layout-topbar .layout-topbar-menu-button i {
+    font-size: 1.25rem;
+}
+
+.layout-topbar .layout-topbar-menu {
+    margin: 0 0 0 auto;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+.layout-topbar .layout-topbar-menu .layout-topbar-button {
+    margin-left: 1rem;
+}
+
+@media (max-width: 991px) {
+    .layout-topbar {
+        justify-content: space-between;
+    }
+
+    .layout-topbar .layout-topbar-logo {
+        width: auto;
+        order: 2;
+    }
+
+    .layout-topbar .layout-menu-button {
+        margin-left: 0;
+        order: 1;
+    }
+
+    .layout-topbar .layout-topbar-menu-button {
+        display: inline-flex;
+        margin-left: 0;
+        order: 3;
+    }
+
+    .layout-topbar .layout-topbar-menu {
+        margin-left: 0;
+        position: absolute;
+        flex-direction: column;
+        background-color: var(--surface-overlay);
+        box-shadow: 0px 3px 5px rgba(0,0,0,.02), 0px 0px 2px rgba(0,0,0,.05), 0px 1px 4px rgba(0,0,0,.08);
+        border-radius: 12px;
+        padding: 1rem;
+        right: 2rem;
+        top: 5rem;
+        min-width: 15rem;
+        display: none;
+        -webkit-animation: scalein 0.15s linear;
+        animation: scalein 0.15s linear;
+    }
+
+    .layout-topbar .layout-topbar-menu.layout-topbar-menu-mobile-active {
+        display: block
+    }
+
+    .layout-topbar .layout-topbar-menu .layout-topbar-button {
+        margin-left: 0;
+        display: flex;
+        width: 100%;
+        height: auto;
+        justify-content: flex-start;
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    .layout-topbar .layout-topbar-menu .layout-topbar-button i {
+        font-size: 1rem;
+        margin-right: .5rem;
+    }
+
+    .layout-topbar .layout-topbar-menu .layout-topbar-button span {
+        font-weight: medium;
+        display: block;
+    }
+}
+/* From _main.scss */
+.layout-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 7rem 2rem 2rem 22rem;
+    transition: margin-left 0.2s;
+    width: 100%;
+}
+
+/* From _content.scss */
+.layout-main {
+    flex-grow: 1;
+    padding-top: 1rem;
+}
+
+/* From BlockViewer.scss */
+.block-viewer .block-section {
+    margin-bottom: 4rem;
+    overflow: hidden;
+}
+
+.block-viewer .block-header {
+    padding: 1rem 2rem;
+    background-color: var(--surface-section);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border: 1px solid var(--surface-d);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.block-viewer .block-header .block-title {
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+}
+
+.block-viewer .block-header .block-title .badge-free {
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--orange-500);
+    color: white;
+    margin-left: 1rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.block-viewer .block-header .block-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    margin-left: 1rem;
+}
+
+.block-viewer .block-header .block-actions a,
+.block-viewer .block-header .block-actions button {
+    display: flex;
+    align-items: center;
+    margin-right: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.block-viewer .block-header .block-actions a:last-child,
+.block-viewer .block-header .block-actions button:last-child {
+    margin-right: 0;
+}
+
+.block-viewer .block-header .block-actions a:not(.block-action-disabled):hover,
+.block-viewer .block-header .block-actions button:not(.block-action-disabled):hover {
+    background-color: var(--surface-c);
+}
+
+.block-viewer .block-header .block-actions a.block-action-active,
+.block-viewer .block-header .block-actions button.block-action-active {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.block-viewer .block-header .block-actions a.block-action-copy i,
+.block-viewer .block-header .block-actions button.block-action-copy i {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.block-viewer .block-header .block-actions a.block-action-disabled,
+.block-viewer .block-header .block-actions button.block-action-disabled {
+    opacity: 0.6;
+    cursor: auto !important;
+}
+
+.block-viewer .block-header .block-actions i {
+    margin-right: 0.5rem;
+}
+
+.block-viewer .block-content {
+    padding: 0;
+    border: 1px solid var(--surface-d);
+    border-top: 0 none;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    overflow: hidden;
+}
+
+.block-viewer .block-content pre.app-code {
+    background-color: var(--surface-card) !important;
+    padding-bottom: 1rem !important;
+    margin-bottom: 0 !important;
+}
+
+.block-viewer .block-content pre.app-code code {
+    padding: 1rem 2.5rem;
+}
+
+@media screen and (max-width: 575px) {
+    .block-viewer .block-header {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .block-viewer .block-header .block-actions {
+        margin-top: 1rem;
+        margin-left: 0;
+    }
 }
 

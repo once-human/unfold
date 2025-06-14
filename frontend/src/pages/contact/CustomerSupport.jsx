@@ -1,10 +1,8 @@
 // src/pages/CustomerSupport.jsx
 import React from 'react';
-import Layout from '../../components/Layout';
 
 const CustomerSupport = () => {
   return (
-    <Layout>
     <div className="min-h-screen bg-gray-50 px-4 py-10 md:px-20">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Customer Support</h1>
       <div className="max-w-3xl mx-auto">
@@ -51,7 +49,6 @@ const CustomerSupport = () => {
         </div>
       </div>
     </div>
-    </Layout>
   );
 };
 

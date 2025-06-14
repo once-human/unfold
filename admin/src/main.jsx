@@ -2,6 +2,7 @@ import React from "react"; // ✅ Add this if missing
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import { BrowserRouter, useLocation } from 'react-router-dom';
 
 // PrimeReact CSS
 import "primereact/resources/primereact.min.css";
@@ -19,12 +20,27 @@ import "./styles/layout/layout.scss";
 import { LayoutProvider } from "./layout/context/layoutcontext";
 import { MenuProvider } from "./layout/context/menucontext";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <LayoutProvider>
-      <MenuProvider>
+const Root = () => {
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/admin/login';
+
+  return (
+    <React.StrictMode>
+      {isLoginPage ? (
         <App />
-      </MenuProvider>
-    </LayoutProvider>
-  </React.StrictMode>
+      ) : (
+        <LayoutProvider>
+          <MenuProvider>
+            <App />
+          </MenuProvider>
+        </LayoutProvider>
+      )}
+    </React.StrictMode>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <Root />
+  </BrowserRouter>
 );

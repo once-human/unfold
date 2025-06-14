@@ -1,16 +1,19 @@
-import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { classNames } from 'primereact/utils';
 import { LayoutContext } from './context/layoutcontext';
+import { useAdminAuth } from '../context/AdminAuthContext';
+import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
-import { Avatar } from 'primereact/avatar';
 
 const AppTopbar = forwardRef((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar, showConfigSidebar } = useContext(LayoutContext);
+    const { adminUser, logout } = useAdminAuth();
     const menubuttonRef = useRef(null);
     const topbarmenuRef = useRef(null);
     const topbarmenubuttonRef = useRef(null);
     const configbuttonRef = useRef(null);
+    const menu = useRef(null);
 
     useImperativeHandle(ref, () => ({
         menubutton: menubuttonRef.current,
@@ -22,6 +25,16 @@ const AppTopbar = forwardRef((props, ref) => {
     const onConfigButtonClick = () => {
         showConfigSidebar();
     };
+
+    const menuItems = [
+        {
+            label: 'Logout',
+            icon: 'pi pi-power-off',
+            command: () => {
+                logout();
+            }
+        }
+    ];
 
     return (
         <div className="layout-topbar">
@@ -43,11 +56,27 @@ const AppTopbar = forwardRef((props, ref) => {
                     <span>Notifications</span>
                 </button>
                 
-                <div className="ml-3">
-                    <Button className="p-link layout-topbar-button" style={{padding: '0.25rem 0.5rem', display: 'flex', alignItems: 'center'}}>
-                        <Avatar icon="pi pi-user" shape="circle" className="mr-2" />
-                        <span className="hidden md:inline">Admin</span>
-                    </Button>
+                <div 
+                    className="relative ml-3 flex items-center py-2 min-h-[2.5rem]"
+                >
+                    {adminUser ? (
+                        <>
+                            <div 
+                                className="cursor-pointer flex items-center"
+                                style={{ backgroundColor: 'transparent !important', borderRadius: '0 !important', padding: '0 !important', margin: '0 !important' }}
+                                onClick={(event) => menu.current.toggle(event)}
+                                aria-controls="popup_menu" aria-haspopup
+                            >
+                                <span className="hidden md:inline text-gray-900 font-medium">Hey, {adminUser.username || adminUser.email}</span>
+                                <i className="pi pi-angle-down ml-2"></i>
+                            </div>
+                            <Menu model={menuItems} popup ref={menu} id="popup_menu" />
+                        </>
+                    ) : (
+                        <Link to="/admin/login" className="text-white flex items-center">
+                            <span className="hidden md:inline">Login</span>
+                        </Link>
+                    )}
                 </div>
 
                 <button ref={configbuttonRef} type="button" className="p-link layout-topbar-button ml-2" onClick={onConfigButtonClick}>

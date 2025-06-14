@@ -190,27 +190,6 @@ export const login = catchAsyncError(async (req, res, next) => {
   sendToken(user, 200, "User logged in successfully.", res);
 });
 
-// Admin Login
-export const adminLogin = catchAsyncError(async (req, res, next) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return next(new ErrorHandler("Email and password are required.", 400));
-  }
-
-  const user = await User.findOne({ email, accountVerified: true }).select("+password");
-
-  if (!user || !(await user.comparePassword(password))) {
-    return next(new ErrorHandler("Invalid email or password.", 400));
-  }
-
-  if (user.role !== "admin") {
-    return next(new ErrorHandler("Access denied. Only administrators can log in here.", 403));
-  }
-
-  sendToken(user, 200, "Admin logged in successfully.", res);
-});
-
 // Logout
 export const logout = catchAsyncError(async (req, res, next) => {
   res

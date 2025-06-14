@@ -14,32 +14,32 @@ const AppMenu = () => {
         {
             label: 'Dashboard',
             icon: 'pi pi-fw pi-home',
-            to: '/dashboard'
+            to: '/admin/dashboard'
         },
         {
             label: 'User Management',
             icon: 'pi pi-fw pi-users',
-            to: '/user-management'
+            to: '/admin/user-management'
         },
         {
             label: 'Membership Plans',
             icon: 'pi pi-fw pi-dollar',
-            to: '/membership-plans'
+            to: '/admin/membership-plans'
         },
-        { label: 'Categories Management', icon: 'pi pi-fw pi-sitemap', to: '/categories-management' },
-        { label: 'Leads Management', icon: 'pi pi-fw pi-list', to: '/leads-management' },
-        { label: 'Admin Requirements', icon: 'pi pi-fw pi-file-edit', to: '/admin-requirements' },
-        { label: 'Customer Support', icon: 'pi pi-fw pi-comments', to: '/customer-support' },
-        { label: 'Advertise With Us', icon: 'pi pi-fw pi-megaphone', to: '/advertise-with-us' },
+        { label: 'Categories Management', icon: 'pi pi-fw pi-sitemap', to: '/admin/categories-management' },
+        { label: 'Leads Management', icon: 'pi pi-fw pi-list', to: '/admin/leads-management' },
+        { label: 'Admin Requirements', icon: 'pi pi-fw pi-file-edit', to: '/admin/admin-requirements' },
+        { label: 'Customer Support', icon: 'pi pi-fw pi-comments', to: '/admin/customer-support' },
+        { label: 'Advertise With Us', icon: 'pi pi-fw pi-megaphone', to: '/admin/advertise-with-us' },
         {
             label: 'Affiliate Program',
             icon: 'pi pi-fw pi-share-alt',
-            to: '/affiliate-program'
+            to: '/admin/affiliate-program'
         },
         {
             label: 'Settings',
             icon: 'pi pi-fw pi-cog',
-            to: '/settings'
+            to: '/admin/settings'
         }
     ];
 
@@ -47,7 +47,7 @@ const AppMenu = () => {
         <MenuProvider>
             {/* Logo / Brand Name Section Added Here */}
             <div className="layout-menu-logo">
-                <Link to="/dashboard" className="flex align-items-center">
+                <Link to="/admin/dashboard" className="flex align-items-center">
                     {/* <img src="/layout/images/logo-placeholder.svg" alt="Logo" height="35" className="mr-2" /> Placeholder for image logo */}
                     <span className="text-xl font-bold">bazaarleads</span>
                 </Link>

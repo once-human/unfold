@@ -23,12 +23,14 @@ const BuyerDashboard = () => {
     <div className="relative inline-block text-left">
       <button
         onClick={handleToggle}
-        className="flex items-center space-x-2 text-blue-700 font-medium py-2 px-4 rounded-lg hover:bg-blue-100 transition-all ease-in-out duration-300"
+        className="flex items-center space-x-2 text-blue-700 font-medium"
       >
         <FaUserCircle className="text-xl" />
         <span>Hi, Harshita</span>
         <svg
-          className={`w-4 h-4 transition-transform ${openMenu ? "rotate-180" : ""}`}
+          className={`w-4 h-4 transition-transform ${
+            openMenu ? "rotate-180" : ""
+          }`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -37,14 +39,14 @@ const BuyerDashboard = () => {
       </button>
 
       {openMenu && (
-        <div className="absolute mt-2 w-64 bg-white shadow-xl rounded-lg border z-50">
+        <div className="absolute mt-2 w-64 bg-white shadow-lg rounded-lg border z-50">
           <div className="px-4 py-3 border-b">
-            <div className="font-semibold text-lg flex items-center justify-between text-blue-700">
+            <div className="font-semibold text-lg flex items-center justify-between">
               Harshita{" "}
               <a
                 href="#"
                 onClick={() => handleNavigation("/buyer/profile")}
-                className="text-blue-500 text-sm underline hover:text-blue-700"
+                className="text-blue-500 text-sm underline"
               >
                 View Profile
               </a>
@@ -58,39 +60,39 @@ const BuyerDashboard = () => {
 
           <ul className="py-2">
             <li
-              className="px-4 py-2 hover:bg-blue-50 flex items-center gap-2 cursor-pointer rounded-lg transition duration-200"
+              className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
               onClick={() => handleNavigation("/buyer/dashboard")}
             >
-              <MdDashboard className="text-lg text-blue-600" />
-              <span className="text-sm text-gray-700">My Dashboard</span>
+              <MdDashboard />
+              My Dashboard
             </li>
             <li
-              className="px-4 py-2 hover:bg-blue-50 flex items-center gap-2 cursor-pointer rounded-lg transition duration-200"
+              className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
               onClick={() => handleNavigation("/buyer/post-inquiry")}
             >
-              <MdPostAdd className="text-lg text-blue-600" />
-              <span className="text-sm text-gray-700">Post Buy Requirement</span>
+              <MdPostAdd />
+              Post Buy Requirement
             </li>
             <li
-              className="px-4 py-2 hover:bg-blue-50 flex items-center gap-2 cursor-pointer rounded-lg transition duration-200"
+              className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
               onClick={() => handleNavigation("/buyers/Manage-requirement")}
             >
-              <MdManageAccounts className="text-lg text-blue-600" />
-              <span className="text-sm text-gray-700">Manage Requirements</span>
+              <MdManageAccounts />
+              Manage Requirements
             </li>
             <li
-              className="px-4 py-2 hover:bg-blue-50 flex items-center gap-2 cursor-pointer rounded-lg transition duration-200"
+              className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
               onClick={() => handleNavigation("/buyer/directory")}
             >
-              <MdOutlineMenuBook className="text-lg text-blue-600" />
-              <span className="text-sm text-gray-700">Products / Services Directory</span>
+              <MdOutlineMenuBook />
+              Products / Services Directory
             </li>
             <li
-              className="px-4 py-2 hover:bg-red-50 flex items-center gap-2 cursor-pointer rounded-lg transition duration-200 text-red-500"
+              className="px-4 py-2 hover:bg-gray-100 flex items-center gap-2 cursor-pointer text-red-500"
               onClick={() => handleNavigation("/login")}
             >
-              <FaSignOutAlt className="text-lg text-red-500" />
-              <span className="text-sm text-red-600">Sign With Different User</span>
+              <FaSignOutAlt />
+              Sign With Different User
             </li>
           </ul>
         </div>

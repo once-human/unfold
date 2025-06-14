@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Menu, X, ShoppingBag, Globe, Factory, ClipboardList, Send, Tag, Inbox,
-  Package, Megaphone, Mail, Home
+  Package, Megaphone, Mail, Home, User, LogOut
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const menuItems = [
   {
@@ -23,7 +24,7 @@ const menuItems = [
     label: "For Suppliers",
     icon: <Tag size={16} />,
     submenu: [
-      { label: "Shortlisted", icon: <Tag size={16} />, path: "/sellers/favourites" },
+      { label: "Shortlisted(Favourites)", icon: <Tag size={16} />, path: "/sellers/favourites" },
       { label: "Latest Buy Leads", icon: <Inbox size={16} />, path: "/sellers/leads" },
       { label: "History", icon: <Package size={16} />, path: "/sellers/history" },
     ],
@@ -43,6 +44,11 @@ const menuItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-md">
@@ -87,14 +93,32 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Sign In / Register */}
+        {/* Auth Buttons / User Menu */}
         <div className="hidden md:flex items-center gap-4">
-          <Link to="/Login" className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100">
-            Sign In
-          </Link>
-          <Link to="/Signup" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Register
-          </Link>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-gray-700">
+                <User size={20} />
+                <span>Hello, {user.name}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded"
+              >
+                <LogOut size={20} />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/auth/login" className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100">
+                Sign In
+              </Link>
+              <Link to="/auth/signup" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
 
@@ -104,6 +128,26 @@ export default function Navbar() {
           <button onClick={() => setIsOpen(false)} className="self-end p-2">
             <X size={24} />
           </button>
+
+          {/* User Info in Mobile */}
+          {user && (
+            <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center gap-2 text-gray-700">
+                <User size={20} />
+                <span>Hello, {user.name}</span>
+              </div>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
+                className="mt-2 flex items-center gap-2 text-red-600 hover:bg-red-50 p-2 rounded w-full"
+              >
+                <LogOut size={20} />
+                Logout
+              </button>
+            </div>
+          )}
 
           {/* Render Shared Menu */}
           {menuItems.map((item, idx) => (
@@ -133,6 +177,26 @@ export default function Navbar() {
               )}
             </div>
           ))}
+
+          {/* Auth Links in Mobile */}
+          {!user && (
+            <div className="mt-4 space-y-2">
+              <Link
+                to="/auth/login"
+                onClick={() => setIsOpen(false)}
+                className="block w-full px-4 py-2 text-center border rounded text-gray-700 hover:bg-gray-100"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/auth/signup"
+                onClick={() => setIsOpen(false)}
+                className="block w-full px-4 py-2 text-center bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>
